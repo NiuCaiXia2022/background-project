@@ -47,6 +47,11 @@
 </template>
 // script setup 另一种方式 不用xiereturn
 <script setup>
+/***
+ * element-plus  内置icon图标
+ * 阿里巴巴矢量图标
+ * svg图标(两种)
+ */
 // 引入 reactive 参数必须是对象
 import { reactive, ref } from 'vue'
 // 图标
