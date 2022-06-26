@@ -27,6 +27,18 @@ module.exports = {
     // quotes:'warn'
     'space-before-function-paren': 'off',
     'no-unused-vars': 'warn',
+    // 解决template标签报错
     'vue/multi-word-component-names': 'off'
-  }
+  },
+  overrides: [
+    {
+      files: [
+        '**/__tests__/*.{j,t}s?(x)',
+        '**/tests/unit/**/*.spec.{j,t}s?(x)'
+      ],
+      env: {
+        jest: true
+      }
+    }
+  ]
 }
