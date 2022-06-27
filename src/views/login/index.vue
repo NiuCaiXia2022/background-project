@@ -1,5 +1,6 @@
 <template>
   <div class="login-content">
+    <!-- 使用icon -->
     <!-- 表单 -->
     <el-form
       :model="loginForm"
@@ -7,9 +8,27 @@
       :rules="logingRoules"
       class="loginform"
     >
-      <!-- 头部  -->
       <div class="login-top">
         <h3 class="login-title">用户登录</h3>
+
+        <!-- 阿里巴巴图标-封装-显示 -->
+        <!-- <IconPdf icon="icon-icon-test" size="50" color="#fff"></IconPdf> -->
+        <!-- 阿里巴巴图标-本地图标-显示 -->
+        <!-- <span
+          class="iconfont icon-icon-test"
+          style="font-size: 50px; color: '#fff'"
+        ></span> -->
+
+        <!-- svg -->
+        <!-- <div
+          class="svg-icon svg-external-icon"
+          style="mask :url('https://res.lgdsunday.club/user.svg') no-repeat 50% 50%; '-wekit-mask':url('https://res.lgdsunday.club/user.svg') no-repeat 50% 50% "
+        ></div>
+
+        <svg v-else class="svg-icon" :class="className" aria-hidden="true">
+          <use :xlink:href="#icon-" />
+        </svg> -->
+
         <span class="icon">icon</span>
       </div>
       <el-form-item prop="username">
@@ -28,10 +47,18 @@
             <el-icon class="el-input__icon"><search /></el-icon>
           </template>
           <template #suffix>
-            <el-icon v-if="inputType==='password'" @click="handlePasswordStatus()" class="el-input__icon">
+            <el-icon
+              v-if="inputType === 'password'"
+              @click="handlePasswordStatus()"
+              class="el-input__icon"
+            >
               <Hide />
             </el-icon>
-            <el-icon v-else @click="handlePasswordStatus()" class="el-input__icon">
+            <el-icon
+              v-else
+              @click="handlePasswordStatus()"
+              class="el-input__icon"
+            >
               <View />
             </el-icon>
           </template>
@@ -56,23 +83,26 @@
 import { reactive, ref } from 'vue'
 // 图标
 import { Avatar, Search, View, Hide } from '@element-plus/icons-vue'
+// 引入 封装验证
 import { validatePassword } from './rule.js'
+// 封装的 Login 接口
+import UserLogin from '../../api/login.js'
+// 引入 md5 加密
+import md5 from 'md5'
 
-const LoginForm = ref(null)// 表单验证
-const inputType = ref('password')// 密码状态
+// 阿里巴巴图标 引入
+// import IconPdf from '../../components/Icon.vue'
+
+// 验证 移动到 rule.js
+const LoginForm = ref(null) // 表单验证
+
+const inputType = ref() // 密码状态
+
 // 表单数据
 const loginForm = reactive({
-  username: '',
-  password: ''
+  username: 'super-admin',
+  password: '123456'
 })
-// 验证 移动到 rule.js
-// const validatePassword = (rule, value, callback) => {
-//   if (value.length < 6) {
-//     callback(new Error('密码不能少于6位'))
-//   } else {
-//     callback()
-//   }
-// }
 
 // 验证表单数据
 const logingRoules = reactive({
@@ -94,27 +124,32 @@ const logingRoules = reactive({
 
 // 点击登录
 const handleLoginForm = async () => {
-  LoginForm.value.validate(async (valid) => {
-    if (!valid) return
+  if (!LoginForm.value) return
+  await LoginForm.value.validate(async (valid) => {
     if (valid) {
-      alert('登录')
-      // const res=await store.dispatch('handleloginsumit',loginform)
+      // alert('登录')
+      loginForm.password = md5(loginForm.password)
+      const response = await UserLogin.getLogin(loginForm)
+      console.log(response)
     }
   })
-  // console.log(LoginForm)
-  // if (!LoginForm) return
-  // await LoginForm.validate((valid) => {
-  //   if (valid) {
-  //     alert('登录')
-  //   }
-  // })
-  // await formEl.validate((valid, fields)
 }
+
 // 密码切换
 const handlePasswordStatus = () => {
   inputType.value = inputType.value === 'password' ? 'text' : 'password'
 }
+
+// 登录
+// LoginForm.value.validate(async (valid) => {
+//   if (!valid) return
+//   if (valid) {
+//     alert('登录')
+//     // const res=await store.dispatch('handleloginsumit',loginform)
+//   }
+// })
 </script>
+
 <style lang="scss" scoped>
 // 定义全局颜色
 $bg: #2d3a4b;
@@ -194,5 +229,17 @@ $cursor: #fff;
       }
     }
   }
+}
+.svg-icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
+.svg-external-icon {
+  background-color: currentColor;
+  mask-size: cover !important;
+  display: inline-block;
 }
 </style>
