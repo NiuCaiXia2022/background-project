@@ -37,7 +37,6 @@ instance.interceptors.response.use(
   function (response) {
     loading.close() // 关loading
 
-    // token过期处理
     // 全局响应处理(鉴权)
     const { data, message, success } = response.data
     // 判断有成功信息
@@ -46,19 +45,25 @@ instance.interceptors.response.use(
       return data
     } else {
       // 没有就提示信息
-      ElMessage.error(message)
+      _showError(message)
       return Promise.reject(new Error(message))
     }
+    // token过期处理  无感知登录 无感知刷新
   },
   function (error) {
     loading.close() // 关loading
 
     // 响应失败进行提示
-    ElMessage.error(error.message)
-
+    _showError(error.message)
     return Promise.reject(error)
   }
 )
+
+// 响应提示
+const _showError = (message) => {
+  const msg = message || '发生未知错误'
+  ElMessage.error(msg)
+}
 // 传参统一
 const request = (options) => {
   if (options.method.toLowerCase() === 'get') {
