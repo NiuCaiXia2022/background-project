@@ -6,19 +6,24 @@ import Storage from '../../utils/localstorage'
 export default {
   namespaced: true,
   state: () => ({
-    token: ''
+    token: Storage.getToken('token') || ''
   }),
   mutations: {
     setToken(state, obj) {
       state.token = obj
-      Storage.setToken(obj)
+      Storage.setToken('token', obj)
     }
   },
   actions: {
     async login({ commit }, payload) {
-      const reponse = await LoginApi.getLogin(payload)
-      console.log(reponse.data.data.token)
-      commit('setToken', reponse.data.data.token)
+      try {
+        const reponse = await LoginApi.getLogin(payload)
+        // console.log(reponse)
+        commit('setToken', reponse.token)
+        return reponse
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 }

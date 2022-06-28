@@ -4,6 +4,8 @@ import axios from 'axios'
 import loading from './loading'
 //  引入md5
 import md5 from 'md5'
+// 提示信息
+import { ElMessage } from 'element-plus'
 
 const instance = axios.create({
   baseURL: process.env.VUE_APP_BASE_API,
@@ -34,13 +36,26 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   function (response) {
     loading.close() // 关loading
-    return response
+
+    // token过期处理
+    // 全局响应处理(鉴权)
+    const { data, message, success } = response.data
+    // 判断有成功信息
+    if (success) {
+      // 返回data
+      return data
+    } else {
+      // 没有就提示信息
+      ElMessage.error(message)
+      return Promise.reject(new Error(message))
+    }
   },
   function (error) {
     loading.close() // 关loading
 
-    // token过期处理
-    // 全局响应处理(鉴权)
+    // 响应失败进行提示
+    ElMessage.error(error.message)
+
     return Promise.reject(error)
   }
 )

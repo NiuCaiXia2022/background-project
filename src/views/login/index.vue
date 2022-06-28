@@ -14,7 +14,9 @@
         <p class="icon">
           <span class="icon-next">
             <el-tooltip content="国际化" placement="bottom" effect="light">
-              <el-button><svg-icon icon="language"></svg-icon></el-button>
+              <el-button
+                ><svg-icon class="language" icon="language"></svg-icon
+              ></el-button>
             </el-tooltip>
           </span>
         </p>
@@ -117,23 +119,26 @@ import { reactive, ref, computed } from 'vue'
 // import { Avatar, Search, View, Hide } from '@element-plus/icons-vue'
 // 引入 封装验证
 import { validatePassword } from './rule.js'
-// 封装的 Login 接口
-import UserLogin from '../../api/login.js'
 // 引入 md5 加密
 import md5 from 'md5'
 // 导入 深拷贝 utli
 import util from '../../utils/util.js'
 // 导入vuex
 import { useStore } from 'vuex'
+// 导入路由
+import { useRouter } from 'vue-router'
 // 导入 svg
 // import SvgIcon from '../../components/SvgIcon'
+// 封装的 Login 接口
+// import UserLogin from '../../api/login.js'
 
 // 阿里巴巴图标 引入
 // import IconPdf from '../../components/Icon.vue'
 
 // 验证 移动到 rule.js
 const LoginForm = ref(null) // 表单验证
-const store = useStore()
+const store = useStore() // vuex
+const router = useRouter() // 路由
 
 const inputType = ref('password') // 密码状态
 
@@ -170,9 +175,11 @@ const handleLoginForm = async () => {
       const newLoginForm = util.typeData(loginForm)
       // console.log(newLoginForm)
       newLoginForm.password = md5(newLoginForm.password)
-      // const response = await UserLogin.getLogin(newLoginForm)
+      const response = await store.dispatch('user/login', newLoginForm)
       // console.log(response)
-      store.dispatch('user/login', newLoginForm)
+
+      // 判断response.token 是否存在  跳转页面
+      if (response.token) router.push('/')
     }
   })
 }
@@ -185,15 +192,6 @@ const passwordStatus = computed(() => {
 const handlePasswordStatus = () => {
   inputType.value = inputType.value === 'password' ? 'text' : 'password'
 }
-
-// 登录
-// LoginForm.value.validate(async (valid) => {
-//   if (!valid) return
-//   if (valid) {
-//     alert('登录')
-//     // const res=await store.dispatch('handleloginsumit',loginform)
-//   }
-// })
 </script>
 
 <style lang="scss" scoped>
@@ -228,21 +226,29 @@ $cursor: #fff;
     // 图标
     .icon {
       position: absolute;
-      top: 8px;
+      top: 2px;
       right: 3px;
       font-size: 18px;
       color: $light_gray;
-      background-color: #fff;
       border-radius: 3px;
-      padding: 3px 2px;
+      width: 30px;
+      height: 30px;
+      background-color: #fff;
       .icon-next {
-        box-sizing: border-box;
-        border: 1px solid rgba(0, 0, 0, 0);
-        padding: 0.5px;
+        // border: 1px solid rgba(0, 0, 0, 0);
+        position: relative;
+        top: 3px;
+        left: 3px;
+        width: 25px;
+        height: 25px;
       }
       .icon-next:hover {
-        border: 1px solid #000;
+        // border: 1px solid #000;
         border-radius: 3px;
+      }
+      .el-tooltip__trigger {
+        padding: 0 4px !important;
+        height: 24px;
       }
     }
   }
