@@ -13,12 +13,8 @@
 
         <p class="icon">
           <span class="icon-next">
-            <el-tooltip
-              content="国际化"
-              placement="bottom"
-              effect="light"
-            >
-              <svg-icon icon="language"></svg-icon>
+            <el-tooltip content="国际化" placement="bottom" effect="light">
+              <el-button><svg-icon icon="language"></svg-icon></el-button>
             </el-tooltip>
           </span>
         </p>
@@ -125,6 +121,10 @@ import { validatePassword } from './rule.js'
 import UserLogin from '../../api/login.js'
 // 引入 md5 加密
 import md5 from 'md5'
+// 导入 深拷贝 utli
+import util from '../../utils/util.js'
+// 导入vuex
+import { useStore } from 'vuex'
 // 导入 svg
 // import SvgIcon from '../../components/SvgIcon'
 
@@ -133,6 +133,7 @@ import md5 from 'md5'
 
 // 验证 移动到 rule.js
 const LoginForm = ref(null) // 表单验证
+const store = useStore()
 
 const inputType = ref('password') // 密码状态
 
@@ -166,9 +167,12 @@ const handleLoginForm = async () => {
   await LoginForm.value.validate(async (valid) => {
     if (valid) {
       // alert('登录')
-      loginForm.password = md5(loginForm.password)
-      const response = await UserLogin.getLogin(loginForm)
-      console.log(response)
+      const newLoginForm = util.typeData(loginForm)
+      // console.log(newLoginForm)
+      newLoginForm.password = md5(newLoginForm.password)
+      // const response = await UserLogin.getLogin(newLoginForm)
+      // console.log(response)
+      store.dispatch('user/login', newLoginForm)
     }
   })
 }

@@ -49,7 +49,7 @@ const request = (options) => {
   if (options.method.toLowerCase() === 'get') {
     options.params = options.data || {}
   }
-  instance(options)
+  return instance(options)
 }
 
 // 获取 icode
