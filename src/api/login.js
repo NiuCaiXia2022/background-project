@@ -9,6 +9,24 @@ const getLogin = (data) => {
   })
 }
 
+// 用户信息 /sys/profile
+const getProfile = () => {
+  return request({
+    url: '/sys/profile',
+    method: 'GET'
+  })
+}
+
+// 获取项目功能 /user/feature
+const getFeature = () => {
+  return request({
+    url: '/user/feature',
+    method: 'GET'
+  })
+}
+
 export default {
-  getLogin
+  getLogin,
+  getProfile,
+  getFeature
 }

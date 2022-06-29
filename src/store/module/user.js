@@ -13,8 +13,13 @@ export default {
       state.token = obj
       Storage.setToken('token', obj)
     }
+
+    // getLoginProfile(state, data) {
+    //   state.token = data
+    // }
   },
   actions: {
+    // 登录
     async login({ commit }, payload) {
       try {
         const reponse = await LoginApi.getLogin(payload)
@@ -25,5 +30,17 @@ export default {
         console.log(error)
       }
     }
+
+    // 用户信息
+    // async loginProfile({ commit }, payload) {
+    //   try {
+    //     const response = await LoginApi.getProfile(payload)
+    //     console.log(response)
+    //     commit('getLoginProfile', payload)
+    //     return response
+    //   } catch (error) {
+    //     console.log(error)
+    //   }
+    // }
   }
 }

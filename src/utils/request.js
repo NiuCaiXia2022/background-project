@@ -6,6 +6,8 @@ import loading from './loading'
 import md5 from 'md5'
 // 提示信息
 import { ElMessage } from 'element-plus'
+// b本地
+// import { useRouter } from "vuex"
 
 const instance = axios.create({
   baseURL: process.env.VUE_APP_BASE_API,
@@ -18,11 +20,15 @@ instance.interceptors.request.use(
     loading.open() // 开loading
 
     // 调用接口 传的参数 加密icode
+    // const token=
     const { icode, time } = getTestICode()
     config.headers.icode = icode
     config.headers.codeType = time
+    // console.log(config.headers)
 
     // 将请求头发送给后台
+    // TODO 处理验证头
+    // config.headers.Authorization = store.getters.token
 
     return config
   },

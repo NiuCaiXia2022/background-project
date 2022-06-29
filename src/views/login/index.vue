@@ -10,7 +10,6 @@
     >
       <div class="login-top">
         <h3 class="login-title">用户登录</h3>
-
         <p class="icon">
           <span class="icon-next">
             <el-tooltip content="国际化" placement="bottom" effect="light">
@@ -20,35 +19,31 @@
             </el-tooltip>
           </span>
         </p>
-
         <!-- <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="Bottom Center prompts info"
-          placement="bottom"
-        >
-          <el-button>bottom</el-button>
-        </el-tooltip>
-        <span class="icon">
-          <svg-icon icon="language"></svg-icon>
-        </span> -->
-
+              class="box-item"
+              effect="dark"
+              content="Bottom Center prompts info"
+              placement="bottom"
+            >
+              <el-button>bottom</el-button>
+            </el-tooltip>
+            <span class="icon">
+              <svg-icon icon="language"></svg-icon>
+            </span> -->
         <!-- 阿里巴巴图标-封装-显示 -->
         <!-- <IconPdf icon="icon-icon-test" size="50" color="#fff"></IconPdf> -->
         <!-- 阿里巴巴图标-本地图标-显示 -->
         <!-- <span
-          class="iconfont icon-icon-test"
-          style="font-size: 50px; color: '#fff'"
-        ></span> -->
-
+              class="iconfont icon-icon-test"
+              style="font-size: 50px; color: '#fff'"
+            ></span> -->
         <!-- svg-封装-显示-->
         <!-- <svg-icon icon="https://res.lgdsunday.club/user.svg"></svg-icon>
-        <svg-icon icon="https://res.lgdsunday.club/user.svg"></svg-icon> -->
-
+            <svg-icon icon="https://res.lgdsunday.club/user.svg"></svg-icon> -->
         <!-- <span class="icon">icon</span> -->
         <!-- <span class="icon">
-          <svg-icon icon="passwordStatus"></svg-icon>
-        </span> -->
+              <svg-icon icon="passwordStatus"></svg-icon>
+            </span> -->
         <!-- <svg-icon class="svg-icon " icon="passwordStatus"></svg-icon> -->
       </div>
       <el-form-item prop="username">
@@ -79,22 +74,14 @@
             </span>
           </template>
 
-          <!-- <template #suffix>
-            <el-icon
-              v-if="inputType === 'password'"
-              @click="handlePasswordStatus()"
-              class="el-input__icon"
-            >
-              <Hide />
-            </el-icon>
-            <el-icon
-              v-else
-              @click="handlePasswordStatus()"
-              class="el-input__icon"
-            >
-              <View />
-            </el-icon>
-          </template> -->
+          <!--<template #suffix>
+  <el-icon v-if="inputType === 'password'" @click="handlePasswordStatus()" class="el-input__icon">
+    <Hide />
+  </el-icon>
+  <el-icon v-else @click="handlePasswordStatus()" class="el-input__icon">
+    <View />
+  </el-icon>
+</template>-->
         </el-input>
       </el-form-item>
 
@@ -131,23 +118,18 @@ import { useRouter } from 'vue-router'
 // import SvgIcon from '../../components/SvgIcon'
 // 封装的 Login 接口
 // import UserLogin from '../../api/login.js'
-
 // 阿里巴巴图标 引入
 // import IconPdf from '../../components/Icon.vue'
-
 // 验证 移动到 rule.js
 const LoginForm = ref(null) // 表单验证
 const store = useStore() // vuex
 const router = useRouter() // 路由
-
 const inputType = ref('password') // 密码状态
-
 // 表单数据
 const loginForm = reactive({
   username: 'super-admin',
   password: '123456'
 })
-
 // 验证表单数据
 const logingRoules = reactive({
   username: [
@@ -165,7 +147,6 @@ const logingRoules = reactive({
     }
   ]
 })
-
 // 点击登录
 const handleLoginForm = async () => {
   if (!LoginForm.value) return
@@ -177,13 +158,11 @@ const handleLoginForm = async () => {
       newLoginForm.password = md5(newLoginForm.password)
       const response = await store.dispatch('user/login', newLoginForm)
       // console.log(response)
-
       // 判断response.token 是否存在  跳转页面
       if (response.token) router.push('/')
     }
   })
 }
-
 // svg 图标 眼睛
 const passwordStatus = computed(() => {
   return inputType.value === 'password' ? 'eye' : 'eye-open'
@@ -204,16 +183,14 @@ $cursor: #fff;
 .login-content {
   height: 100%;
   background-color: $bg;
-  position: relative;
-  // 表单
+  position: relative; // 表单
   .loginform {
     width: 520px;
     position: absolute;
     left: 50%;
     margin-left: -260px;
     top: 160px;
-  }
-  // 头部标签
+  } // 头部标签
   .login-top {
     position: relative;
     .login-title {
@@ -222,8 +199,7 @@ $cursor: #fff;
       text-align: center;
       font-weight: 400;
       margin-bottom: 40px;
-    }
-    // 图标
+    } // 图标
     .icon {
       position: absolute;
       top: 2px;
@@ -251,8 +227,7 @@ $cursor: #fff;
         height: 24px;
       }
     }
-  }
-  // 表单item
+  } // 表单item
   ::v-deep .el-form-item {
     border: 1px solid rgba(255, 255, 255, 0.1);
     background: rgba(0, 0, 0, 0.1);

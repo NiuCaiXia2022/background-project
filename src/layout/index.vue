@@ -3,17 +3,40 @@
     <!-- layout 页面 -->
     <Sidebar class="sidebar-content"></Sidebar>
     <div class="main-content">
+      <!-- 右上 -->
       <div class="layout-header">
         <Navbar></Navbar>
+        <Tagview></Tagview>
       </div>
+      <!-- 右下 -->
       <Appmain></Appmain>
     </div>
   </div>
 </template>
 <script setup>
+// 四个子组件
 import Sidebar from './Sidebar'
 import Navbar from './Navbar'
 import Appmain from './Appmain'
+import Tagview from '../components/TagView'
+// store
+import { useStore } from 'vuex'
+// import {  ref } from 'vue'
+
+const store = useStore()
+// console.log(store)
+
+const token = store.getters.token
+// console.log(token)
+// 获取用户信息
+const getLoginProfile = async () => {
+  const responst = await store.dispatch('user/loginProfile', token)
+  //  await store.dispatch('getLoginProfile')
+
+  // const response = await Login.getProfile()
+  console.log(responst)
+}
+getLoginProfile(token)
 </script>
 <style lang="scss" scoped>
 .layout-content {
@@ -41,11 +64,14 @@ import Appmain from './Appmain'
     height: 100%;
     margin-left: 210px;
     position: relative;
+    padding: 104px 20px 20px 20px;
     // 右上
-    .layout-header{
-      position: fixed;top: 0;
+    .layout-header {
+      position: fixed;
+      top: 0;
       right: 0;
       z-index: 999;
+      width: calc(100% - 210px);
     }
   }
 }
