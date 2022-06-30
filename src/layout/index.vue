@@ -1,9 +1,10 @@
 <template>
   <div class="layout-content">
     <!-- layout 页面 -->
+    <!-- 左边 -->
     <Sidebar class="sidebar-content"></Sidebar>
+    <!-- 右 -->
     <div class="main-content">
-      <!-- 右上 -->
       <div class="layout-header">
         <Navbar></Navbar>
         <Tagview></Tagview>
@@ -20,23 +21,12 @@ import Navbar from './Navbar'
 import Appmain from './Appmain'
 import Tagview from '../components/TagView'
 // store
-import { useStore } from 'vuex'
+// import { useStore } from 'vuex'
 // import {  ref } from 'vue'
-
-const store = useStore()
+// const store = useStore()
 // console.log(store)
-
-const token = store.getters.token
+// const token = store.getters.token
 // console.log(token)
-// 获取用户信息
-const getLoginProfile = async () => {
-  const responst = await store.dispatch('user/loginProfile', token)
-  //  await store.dispatch('getLoginProfile')
-
-  // const response = await Login.getProfile()
-  console.log(responst)
-}
-getLoginProfile(token)
 </script>
 <style lang="scss" scoped>
 .layout-content {

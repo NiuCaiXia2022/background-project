@@ -13,9 +13,7 @@
         <p class="icon">
           <span class="icon-next">
             <el-tooltip content="国际化" placement="bottom" effect="light">
-              <el-button
-                ><svg-icon class="language" icon="language"></svg-icon
-              ></el-button>
+              <el-button><svg-icon icon="language"></svg-icon></el-button>
             </el-tooltip>
           </span>
         </p>
@@ -30,21 +28,21 @@
             <span class="icon">
               <svg-icon icon="language"></svg-icon>
             </span> -->
-        <!-- 阿里巴巴图标-封装-显示 -->
-        <!-- <IconPdf icon="icon-icon-test" size="50" color="#fff"></IconPdf> -->
-        <!-- 阿里巴巴图标-本地图标-显示 -->
-        <!-- <span
+        <!-- 阿里巴巴图标-封装-显示
+        <IconPdf icon="icon-icon-test" size="50" color="#fff"></IconPdf>
+        阿里巴巴图标-本地图标-显示
+        <span
               class="iconfont icon-icon-test"
               style="font-size: 50px; color: '#fff'"
-            ></span> -->
-        <!-- svg-封装-显示-->
-        <!-- <svg-icon icon="https://res.lgdsunday.club/user.svg"></svg-icon>
-            <svg-icon icon="https://res.lgdsunday.club/user.svg"></svg-icon> -->
-        <!-- <span class="icon">icon</span> -->
-        <!-- <span class="icon">
+            ></span>
+        svg-封装-显示
+        <svg-icon icon="https://res.lgdsunday.club/user.svg"></svg-icon>
+            <svg-icon icon="https://res.lgdsunday.club/user.svg"></svg-icon>
+        <span class="icon">icon</span>
+        <span class="icon">
               <svg-icon icon="passwordStatus"></svg-icon>
-            </span> -->
-        <!-- <svg-icon class="svg-icon " icon="passwordStatus"></svg-icon> -->
+            </span>
+        <svg-icon class="svg-icon " icon="passwordStatus"></svg-icon> -->
       </div>
       <el-form-item prop="username">
         <!-- 第一种icon -->
@@ -108,12 +106,14 @@ import { reactive, ref, computed } from 'vue'
 import { validatePassword } from './rule.js'
 // 引入 md5 加密
 import md5 from 'md5'
-// 导入 深拷贝 utli
+// 导入 深拷贝 utils/util
 import util from '../../utils/util.js'
 // 导入vuex
 import { useStore } from 'vuex'
 // 导入路由
 import { useRouter } from 'vue-router'
+// 封装的时间戳  utils/auth
+// import { setTimeStamp } from '../../utils/auth'
 // 导入 svg
 // import SvgIcon from '../../components/SvgIcon'
 // 封装的 Login 接口
@@ -158,6 +158,10 @@ const handleLoginForm = async () => {
       newLoginForm.password = md5(newLoginForm.password)
       const response = await store.dispatch('user/login', newLoginForm)
       // console.log(response)
+
+      // 当前时间存储本地
+      // setTimeStamp()
+
       // 判断response.token 是否存在  跳转页面
       if (response.token) router.push('/')
     }

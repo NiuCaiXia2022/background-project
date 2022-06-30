@@ -6,9 +6,11 @@ import loading from './loading'
 import md5 from 'md5'
 // 提示信息
 import { ElMessage } from 'element-plus'
-// b本地
-// import { useRouter } from "vuex"
+// vuex
+import store from '../store'
+import router from '@/router'
 
+// 实例化axios
 const instance = axios.create({
   baseURL: process.env.VUE_APP_BASE_API,
   timeout: 5000
@@ -19,16 +21,18 @@ instance.interceptors.request.use(
   function (config) {
     loading.open() // 开loading
 
-    // 调用接口 传的参数 加密icode
-    // const token=
+    // 解构赋值 headers
     const { icode, time } = getTestICode()
     config.headers.icode = icode
     config.headers.codeType = time
     // console.log(config.headers)
 
+    // 调用接口 传的参数 加密icode
+    const token = store.getters.token
+    // console.log('...', token)
     // 将请求头发送给后台
     // TODO 处理验证头
-    // config.headers.Authorization = store.getters.token
+    if (token) config.headers.Authorization = 'Bearen ' + token
 
     return config
   },
@@ -59,8 +63,29 @@ instance.interceptors.response.use(
   function (error) {
     loading.close() // 关loading
 
+    // token过期处理 401 无感知登录 无感知刷新
+    if (
+      error.response &&
+      error.response.data &&
+      error.response.data.code === 401
+    ) {
+      store.dispatch('user/logout')
+      router.push('/login')
+    }
+
+    // 单用户登录
+    // if (
+    //   error.response &&
+    //   error.response.data &&
+    //   error.response.data.code === 401
+    // ) {
+    //   store.dispatch('user/logout')
+    //   router.push('/login')
+    // }
+
     // 响应失败进行提示
     _showError(error.message)
+
     return Promise.reject(error)
   }
 )
@@ -70,6 +95,7 @@ const _showError = (message) => {
   const msg = message || '发生未知错误'
   ElMessage.error(msg)
 }
+
 // 传参统一
 const request = (options) => {
   if (options.method.toLowerCase() === 'get') {

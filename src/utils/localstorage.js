@@ -25,7 +25,6 @@ const getToken = (key) => {
 // 删除
 const remoteToken = (key) => {
   localStorage.removeItem(key)
-  //  sessionStorage.removeItem(SET_TOKEN)
 }
 
 // 清空

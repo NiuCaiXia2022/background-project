@@ -10,7 +10,7 @@ const getLogin = (data) => {
 }
 
 // 用户信息 /sys/profile
-const getProfile = () => {
+const getUserList = () => {
   return request({
     url: '/sys/profile',
     method: 'GET'
@@ -27,6 +27,6 @@ const getFeature = () => {
 
 export default {
   getLogin,
-  getProfile,
+  getUserList,
   getFeature
 }

@@ -6,17 +6,19 @@ import Storage from '../../utils/localstorage'
 export default {
   namespaced: true,
   state: () => ({
-    token: Storage.getToken('token') || ''
+    token: Storage.getToken('token') || '',
+    userInfo: Storage.getToken('userInfo') || ''
   }),
   mutations: {
     setToken(state, obj) {
       state.token = obj
       Storage.setToken('token', obj)
-    }
+    },
 
-    // getLoginProfile(state, data) {
-    //   state.token = data
-    // }
+    getLoginProfile(state, userInfo) {
+      state.userInfo = userInfo
+      Storage.setToken('userInfo', userInfo)
+    }
   },
   actions: {
     // 登录
@@ -29,18 +31,26 @@ export default {
       } catch (error) {
         console.log(error)
       }
-    }
+    },
 
     // 用户信息
-    // async loginProfile({ commit }, payload) {
-    //   try {
-    //     const response = await LoginApi.getProfile(payload)
-    //     console.log(response)
-    //     commit('getLoginProfile', payload)
-    //     return response
-    //   } catch (error) {
-    //     console.log(error)
-    //   }
-    // }
+    async getUserList({ commit }) {
+      try {
+        const response = await LoginApi.getUserList()
+        // console.log(response)
+        commit('getLoginProfile', response)
+        return response
+      } catch (error) {
+        console.log(error)
+      }
+    },
+
+    // 退出登录
+    logout({ commit }) {
+      commit('setToken', '')
+      commit('getLoginProfile', '')
+      Storage.remoteToken('token')
+      Storage.remoteToken('userInfo')
+    }
   }
 }
